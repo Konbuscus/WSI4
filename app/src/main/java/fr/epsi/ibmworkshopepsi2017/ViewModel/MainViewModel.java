@@ -3,6 +3,9 @@ package fr.epsi.ibmworkshopepsi2017.ViewModel;
 import android.arch.lifecycle.ViewModel;
 import android.hardware.input.InputManager;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
 
 /**
@@ -12,8 +15,11 @@ import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
 public class MainViewModel extends ViewModel {
 
     private static MainViewModel mainViewModel;
-
     private Delivery delivery;
+    private ArrayList deliveryList;
+
+
+
     public MainViewModel()
     {
         getInstance();
@@ -39,4 +45,11 @@ public class MainViewModel extends ViewModel {
     }
 
 
+    public ArrayList getDeliveryList() {
+        return deliveryList;
+    }
+
+    public void setDeliveryList(ArrayList deliveryList) {
+        this.deliveryList = deliveryList;
+    }
 }
