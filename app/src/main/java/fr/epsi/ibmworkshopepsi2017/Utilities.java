@@ -3,6 +3,7 @@ package fr.epsi.ibmworkshopepsi2017;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -19,10 +20,10 @@ public class Utilities {
     //Generic method to get JSON from URL
     public  String GetJson(String url)
     {
-        HttpsURLConnection con = null;
+        HttpURLConnection con = null;
         try {
             URL u = new URL(url);
-            con = (HttpsURLConnection) u.openConnection();
+            con = (HttpURLConnection) u.openConnection();
 
             con.connect();
 

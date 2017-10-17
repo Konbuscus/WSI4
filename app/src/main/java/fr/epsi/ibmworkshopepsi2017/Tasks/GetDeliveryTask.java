@@ -85,7 +85,7 @@ public class GetDeliveryTask extends AsyncTask<Object, Object, String> {
 
 
     public void getDelivery() throws JSONException {
-        String response = "yoanmercier.fr/test.json"; //API URL TO QUERY
+        String response = "http://yoanmercier.fr/test.json"; //API URL TO QUERY
 
         Utilities utilities = new Utilities();
         String jsonResponse = utilities.GetJson(response);
