@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String ROOT_LOGIN = "god";
     public static final String ROOT_PASSWORD = "god";
-    private Boolean credentialsAreOk;
+    public static Boolean userIsLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        credentialsAreOk = false;
+        userIsLoggedIn = false;
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,40 +52,33 @@ public class MainActivity extends AppCompatActivity
         final TextView loginTextView = (TextView)findViewById(R.id.login_login_txt);
         final TextView passwordTextView = (TextView)findViewById(R.id.login_password_txt);
 
-
-
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        if (!userIsLoggedIn) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Vrais trucs
-                if (loginTextView.getText().equals(MainActivity.ROOT_LOGIN) && passwordTextView.getText().equals(MainActivity.ROOT_PASSWORD)) {
-                //if (true) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Successfully logged in")
-                            .setTitle("Success");
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                    Intent deliveriesIntent = new Intent(MainActivity.this, DeliveriesListActivity.class);
-                    startActivity(deliveriesIntent);
-                } else {
-                    // refresh la page
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setMessage("Failed to log in")
-                            .setTitle("Error");
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    v.invalidate();
+            connectButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: Vrais trucs
+                    if (loginTextView.getText().toString().equals(MainActivity.ROOT_LOGIN) && passwordTextView.getText().toString().equals(MainActivity.ROOT_PASSWORD)) {
+                        AlertDialog d = Utilities.buildDialog("Success", "Successfully logged in", MainActivity.this);
+                        userIsLoggedIn = true;
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        Intent deliveriesIntent = new Intent(MainActivity.this, DeliveriesListActivity.class);
+                        startActivity(deliveriesIntent);
+                        d.cancel();
+                    } else {
+                        userIsLoggedIn = false;
+                        Utilities.buildDialog("Error", "Failed to log in", MainActivity.this);
+                        v.invalidate();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -135,5 +128,24 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        if (userIsLoggedIn) {
+            final TextView loginTextView = (TextView)findViewById(R.id.login_login_txt);
+            final TextView passwordTextView = (TextView)findViewById(R.id.login_password_txt);
+            final Button connectButton = (Button)findViewById(R.id.login_validate_btn);
+            final TextView label1 = (TextView)findViewById(R.id.login_label);
+            final TextView label2 = (TextView)findViewById(R.id.password_label);
+            label1.setVisibility(View.INVISIBLE);
+            label2.setVisibility(View.INVISIBLE);
+            loginTextView.setVisibility(View.INVISIBLE);
+            passwordTextView.setVisibility(View.INVISIBLE);
+            connectButton.setVisibility(View.INVISIBLE);
+            super.onResume();
+        } else {
+            super.onResume();
+        }
     }
 }
