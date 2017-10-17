@@ -1,5 +1,8 @@
 package fr.epsi.ibmworkshopepsi2017;
 
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,6 +54,16 @@ public class Utilities {
             }
         }
         return null;
+    }
+
+    public static AlertDialog buildDialog(String caption, String message, Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(message)
+               .setTitle(caption);
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+        return dialog;
     }
 
 }
