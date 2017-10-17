@@ -19,8 +19,7 @@ public class DeliveriesListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deliveries_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
         textViewInfo = (TextView) findViewById(R.id.testNFC);
         //On obtient le NFC pour le RFID
