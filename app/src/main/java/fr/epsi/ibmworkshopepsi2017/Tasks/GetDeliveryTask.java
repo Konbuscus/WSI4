@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * Get JSON data about deliveries from custom API
  */
 
-public class GetDeliveryTask extends AsyncTask<Object, Object, String> {
+    public class GetDeliveryTask extends AsyncTask<Void, Void, Void> {
 
 
     private Context mContext;
@@ -40,15 +40,12 @@ public class GetDeliveryTask extends AsyncTask<Object, Object, String> {
 
 
     @Override
-    protected String doInBackground(Object... params) {
-
-
-
-
+    protected Void doInBackground(Void... Params) {
         try {
             getDelivery();
 
         } catch (JSONException e) {
+
             e.printStackTrace();
         }
         return null;
@@ -57,7 +54,7 @@ public class GetDeliveryTask extends AsyncTask<Object, Object, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        deliveryList = new ArrayList<>();
+        deliveryList = new ArrayList<Delivery>();
         /*//Passing Context to progress dialog | Displaying infos
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(false);
@@ -68,18 +65,10 @@ public class GetDeliveryTask extends AsyncTask<Object, Object, String> {
 
 
     @Override
-    protected void onPostExecute(String result)
+    protected void onPostExecute(Void result)
     {
         super.onPostExecute(result);
-
-        if(result.equalsIgnoreCase("Exception Caught")) {
-            progressDialog.dismiss();
-        }
-        else{
-            //Callback
-            System.out.println(result);
-        }
-
+        storeData(deliveryList);
     }
 
 
@@ -94,21 +83,30 @@ public class GetDeliveryTask extends AsyncTask<Object, Object, String> {
         //JSON object
         JSONObject jsonReponse = new JSONObject(jsonResponse);
 
-        for(int i = 0; i < jsonReponse.length(); i++)
+        for(int i = 0; i < jsonReponse.getJSONArray("Deliveries").length(); i++)
         {
             //DELIVERY CREATION
+            JSONObject obj = jsonReponse.getJSONArray("Deliveries").getJSONObject(i);
+
             Delivery delivery  = new Delivery();
             //Getting data and assigning them to our custom delivery object
-            delivery.setDeliveryID(jsonReponse.getInt("deliveryID"));
-            delivery.setAdress(jsonReponse.getString("address"));
-            delivery.setPrice(jsonReponse.getDouble("price"));
-            delivery.setQuantity(jsonReponse.getInt("quantity"));
-            delivery.setClientID(jsonReponse.getInt("clientId"));
+            delivery.setDeliveryID(obj.getInt("deliveryID"));
+            delivery.setAdress(obj.getString("address"));
+            delivery.setPrice(obj.getDouble("price"));
+            delivery.setQuantity(obj.getInt("quantity"));
+            delivery.setClientID(obj.getInt("clientId"));
             //Adding delivery to the final list to display
             deliveryList.add(delivery);
         }
-        //Setting custom delivery to our singleton to retreive it easely in our activity
-        MainViewModel.getInstance().setDeliveryList(deliveryList);
 
+
+
+
+    }
+
+
+    public void storeData(ArrayList<Delivery> deliveryList)
+    {
+        MainViewModel.getInstance().setDeliveryList(deliveryList);
     }
 }

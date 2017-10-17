@@ -5,28 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fr.epsi.ibmworkshopepsi2017.DeliveriesListActivity">
-<TextView
-    android:layout_width="368dp"
-    android:layout_height="0dp"
-    android:text="Metal gear"
-    tools:layout_constraintTop_creator="1"
-    android:layout_marginTop="-1dp"
-    tools:layout_constraintLeft_creator="1"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:layout_marginLeft="-22dp" />
-
-    <TextView
-        android:id="@+id/testNFC"
-        android:layout_width="222dp"
-        android:layout_height="39dp"
-        tools:layout_constraintTop_creator="1"
-        android:text="mdr"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="186dp"
-        android:layout_marginTop="95dp" />
+    <ListView
+        android:id="@+id/deliveriesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -12,17 +12,17 @@ import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
  * Created by HBxAa on 16/10/2017.
  */
 
-public class MainViewModel extends ViewModel {
+public class MainViewModel extends  ViewModel{
 
     private static MainViewModel mainViewModel;
     private Delivery delivery;
-    private ArrayList deliveryList;
+    private ArrayList<Delivery> deliveryList;
 
 
 
     public MainViewModel()
     {
-        getInstance();
+
     }
 
     public void  SetDelivery(Delivery delivery)
@@ -45,11 +45,16 @@ public class MainViewModel extends ViewModel {
     }
 
 
-    public ArrayList getDeliveryList() {
+    public ArrayList<Delivery> getDeliveryList() {
         return deliveryList;
     }
 
-    public void setDeliveryList(ArrayList deliveryList) {
+    public void setDeliveryList(ArrayList<Delivery> deliveryList) {
         this.deliveryList = deliveryList;
+    }
+
+    public String getBanana()
+    {
+        return "Banana";
     }
 }
