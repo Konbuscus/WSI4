@@ -1,17 +1,26 @@
 package fr.epsi.ibmworkshopepsi2017;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.zxing.WriterException;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -67,15 +76,22 @@ public class WaitingForConfirmation extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_waiting_for_confirmation, container, false);
+
+
+
+
         TextView textView = (TextView) v.findViewById(R.id.rfidLayout);
         TextView address = (TextView) v.findViewById(R.id.addressLivraison);
         TextView clientId = (TextView) v.findViewById(R.id.ClientId);
         TextView price = (TextView) v.findViewById(R.id.Price);
         TextView quantity = (TextView) v.findViewById(R.id.Quantity);
         TextView type = (TextView) v.findViewById(R.id.TypeDelivery);
-
+        ImageView qrImage = (ImageView)v.findViewById(R.id.QRcode);
         address.setText(deliveryClicked.getAdress());
-        //clientId.setText(deliveryClicked.getClientID());
+        if(deliveryClicked.getClientID() != 0)
+        {
+            //clientId.setText(deliveryClicked.getClientID());
+        }
         price.setText(String.valueOf(deliveryClicked.getPrice()));
         quantity.setText(String.valueOf(deliveryClicked.getQuantity()));
         if(deliveryClicked.getTypeDelivery() == 0){
@@ -91,6 +107,17 @@ public class WaitingForConfirmation extends DialogFragment {
 
         }
         textView.setVisibility(View.VISIBLE);
+
+        //QRCODE
+        QRGEncoder qrgEncoder = new QRGEncoder(deliveryClicked.toString(), null, QRGContents.Type.TEXT, 16);
+        try {
+            // Getting QR-Code as Bitmap
+           Bitmap bitmap = qrgEncoder.encodeAsBitmap();
+            // Setting Bitmap to ImageView
+            qrImage.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            Log.v(TAG, e.toString());
+        }
 
         return v;
     }
