@@ -1,25 +1,12 @@
 package fr.epsi.ibmworkshopepsi2017.Tasks;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import fr.epsi.ibmworkshopepsi2017.MainActivity;
 import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
 import fr.epsi.ibmworkshopepsi2017.Utilities;
-import fr.epsi.ibmworkshopepsi2017.ViewModel.MainViewModel;
-
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.view.Gravity;
-import android.widget.ArrayAdapter;
-
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -92,6 +79,7 @@ import java.util.ArrayList;
             delivery.setPrice(obj.getDouble("price"));
             delivery.setQuantity(obj.getInt("quantity"));
             delivery.setClientID(obj.getInt("clientId"));
+            delivery.setTypeDelivery(obj.getInt("typeDelivery"));
             //Adding delivery to the final list to display
             deliveryList.add(delivery);
         }

@@ -1,12 +1,15 @@
 package fr.epsi.ibmworkshopepsi2017.Models;
 
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by HBxAa on 16/10/2017.
  */
 
-public class Delivery {
+public class Delivery implements Serializable{
 
 
     //Private variable
@@ -16,6 +19,7 @@ public class Delivery {
     private int quantity;
     private String adress;
     private double price;
+    private int typeDelivery;
 
 
     //Constructor
@@ -27,7 +31,7 @@ public class Delivery {
         this.quantity = getQuantity();
         this.adress = getAdress();
         this.price = getPrice();
-
+        this.typeDelivery  = getTypeDelivery();
     }
 
     //Getter And Setter
@@ -77,5 +81,13 @@ public class Delivery {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getTypeDelivery() {
+        return typeDelivery;
+    }
+
+    public void setTypeDelivery(int typeDelivery) {
+        this.typeDelivery = typeDelivery;
     }
 }

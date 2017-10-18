@@ -1,16 +1,22 @@
 package fr.epsi.ibmworkshopepsi2017;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentManagerNonConfig;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -19,6 +25,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +34,13 @@ import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
 import fr.epsi.ibmworkshopepsi2017.Tasks.GetDeliveryTask;
 import fr.epsi.ibmworkshopepsi2017.ViewModel.MainViewModel;
 
-public class DeliveriesListActivity extends AppCompatActivity  {
+public class DeliveriesListActivity extends AppCompatActivity implements  WaitingForConfirmation.OnFragmentInteractionListener {
 
 
     private NfcAdapter nfcAdapter;
     TextView textViewInfo;
     private DeliveryAdapter deliveryAdapter;
     private Activity self;
-
 
 
 
@@ -49,9 +55,41 @@ public class DeliveriesListActivity extends AppCompatActivity  {
                 // Do Something after the task has finished
                 MainViewModel.getInstance().setDeliveryList(result);
                 ArrayList<Delivery> deliveryList =  MainViewModel.getInstance().getDeliveryList();
-                ListView listView = (ListView) findViewById(R.id.deliveriesList);
+                final ListView listView = (ListView) findViewById(R.id.deliveriesList);
                 deliveryAdapter = new DeliveryAdapter(self, deliveryList);
                 listView.setAdapter(deliveryAdapter);
+
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        Delivery deliveryClicked = deliveryAdapter.getItem(position);
+                        Bundle args = new Bundle();
+                        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+                        //Case where deliveryType is from a Company to a Company
+                        if(deliveryClicked.getTypeDelivery() == 0)
+                        {
+                            //Fragment with delivery as parameters
+                            //In function of Type, setting RFID or QRCode
+                            args.putBoolean("isFromCompanyToCompany", true);
+                        }
+                        //Case where deliveryType is from a Company to a customer
+                        else{
+
+                            //Fragment with delivery as parameters
+                            //In function of Type, setting RFID or QRCode
+                            args.putBoolean("isFromCompanyToCompany", false);
+                        }
+
+                        args.putSerializable("currentDelivery", deliveryClicked);
+                        WaitingForConfirmation waitingForConfirmation = new WaitingForConfirmation();
+                        waitingForConfirmation.setArguments(args);
+                        waitingForConfirmation.show(fm, "WaitingForConfirmation");
+
+                    }
+                });
+
             }
         });
 
@@ -75,6 +113,10 @@ public class DeliveriesListActivity extends AppCompatActivity  {
 
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 
 
     //NFC BULLSHITO

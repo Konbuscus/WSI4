@@ -1,0 +1,76 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/containerConfirmation"
+
+    tools:context="fr.epsi.ibmworkshopepsi2017.WaitingForConfirmation">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="243dp">
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/rfidLayout"
+        android:layout_width="200dp"
+        android:layout_height="29dp"
+        android:text="En attente de validation RFID"
+        android:layout_below="@+id/TypeDelivery"
+        android:layout_alignParentEnd="true"
+        android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/addressLivraison"
+            android:layout_width="200dp"
+            android:layout_height="29dp"
+            android:text="Adress"
+            android:layout_marginTop="51dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/Price"
+            android:layout_width="200dp"
+            android:layout_height="29dp"
+            android:text="Price"
+            android:layout_below="@+id/addressLivraison"
+            android:layout_alignParentEnd="true"
+            android:textSize="15dp"/>
+
+        <TextView
+        android:id="@+id/Quantity"
+        android:layout_width="200dp"
+        android:layout_height="29dp"
+        android:text="Quantity"
+        android:layout_below="@+id/Price"
+        android:layout_alignStart="@+id/Price" />
+
+        <TextView
+            android:id="@+id/ClientId"
+            android:layout_width="200dp"
+            android:layout_height="29dp"
+            android:text="ClientId"
+            android:layout_below="@+id/Quantity"
+            android:layout_alignStart="@+id/Quantity"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/TypeDelivery"
+            android:layout_width="200dp"
+            android:layout_height="29dp"
+            android:text="BTOC OR CTOC"
+            android:layout_below="@+id/ClientId"
+            android:layout_alignStart="@+id/ClientId"
+            android:textSize="15dp"/>
+    </RelativeLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    </RelativeLayout>
+
+</FrameLayout>
