@@ -68,8 +68,7 @@ public class MainActivity extends AppCompatActivity
                         AlertDialog d = Utilities.buildDialog("Success", "Successfully logged in", MainActivity.this);
                         userIsLoggedIn = true;
                         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                        Intent deliveriesIntent = new Intent(MainActivity.this, DeliveriesListActivity.class);
-                        startActivity(deliveriesIntent);
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
                         d.cancel();
                     } else {
                         userIsLoggedIn = false;
@@ -107,8 +106,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, DeliveriesListActivity.class);
-            startActivity(intent);
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -121,8 +119,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_list_deliveries) {
-            Intent deliveriesIntent = new Intent(this, DeliveriesListActivity.class);
-            startActivity(deliveriesIntent);
+            Intent intent = new Intent(this, DeliveriesListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_scan) {
             Intent scanIntent = new Intent(this, ScanActivity.class);
             startActivity(scanIntent);

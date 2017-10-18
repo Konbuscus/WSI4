@@ -13,8 +13,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.Gravity;
+import android.widget.ArrayAdapter;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -25,36 +27,42 @@ import java.util.ArrayList;
  * Get JSON data about deliveries from custom API
  */
 
-    public class GetDeliveryTask extends AsyncTask<Void, Void, Void> {
+    public class GetDeliveryTask extends AsyncTask<Void, Void, ArrayList<Delivery>> {
 
 
-    private Context mContext;
 
-    public GetDeliveryTask(Context context){
 
-        this.mContext = context;
-
+    public interface TaskListener {
+        void onFinished(ArrayList<Delivery> result);
     }
-    ArrayList<Delivery> deliveryList;
+
+
+    private final TaskListener taskListener;
+
+    public GetDeliveryTask(TaskListener listener){
+
+        this.taskListener = listener;
+    }
+    private ArrayList<Delivery> deliveryList;
+
     ProgressDialog progressDialog;
 
-
     @Override
-    protected Void doInBackground(Void... Params) {
+    protected ArrayList<Delivery> doInBackground(Void... params) {
         try {
             getDelivery();
-
         } catch (JSONException e) {
 
             e.printStackTrace();
+
         }
-        return null;
+        return deliveryList;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        deliveryList = new ArrayList<Delivery>();
+        deliveryList = new ArrayList<>();
         /*//Passing Context to progress dialog | Displaying infos
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setCancelable(false);
@@ -63,23 +71,12 @@ import java.util.ArrayList;
         progressDialog.show();*/
     }
 
-
-    @Override
-    protected void onPostExecute(Void result)
-    {
-        super.onPostExecute(result);
-        storeData(deliveryList);
-    }
-
-
-
-    public void getDelivery() throws JSONException {
+    private void getDelivery() throws JSONException {
         String response = "http://yoanmercier.fr/test.json"; //API URL TO QUERY
 
         Utilities utilities = new Utilities();
         String jsonResponse = utilities.GetJson(response);
 
-        ArrayList<Delivery> deliveryList = new ArrayList<>();
         //JSON object
         JSONObject jsonReponse = new JSONObject(jsonResponse);
 
@@ -99,14 +96,17 @@ import java.util.ArrayList;
             deliveryList.add(delivery);
         }
 
-
-
-
     }
 
-
-    public void storeData(ArrayList<Delivery> deliveryList)
+    @Override
+    protected void onPostExecute(ArrayList<Delivery> result)
     {
-        MainViewModel.getInstance().setDeliveryList(deliveryList);
+        super.onPostExecute(result);
+        if(this.taskListener != null){
+            this.taskListener.onFinished(result);
+        }
     }
+
+
+
 }

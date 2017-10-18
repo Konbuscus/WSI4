@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +27,36 @@ import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
 import fr.epsi.ibmworkshopepsi2017.Tasks.GetDeliveryTask;
 import fr.epsi.ibmworkshopepsi2017.ViewModel.MainViewModel;
 
-public class DeliveriesListActivity extends AppCompatActivity {
+public class DeliveriesListActivity extends AppCompatActivity  {
 
 
     private NfcAdapter nfcAdapter;
     TextView textViewInfo;
     private DeliveryAdapter deliveryAdapter;
+    private Activity self;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deliveries_list);
-        GetDeliveryTask getDeliveryTask = new GetDeliveryTask(this);
-        getDeliveryTask.execute();
+        self = this;
+        GetDeliveryTask task = new GetDeliveryTask(new GetDeliveryTask.TaskListener() {
+            @Override
+            public void onFinished(ArrayList<Delivery> result) {
+                // Do Something after the task has finished
+                MainViewModel.getInstance().setDeliveryList(result);
+                ArrayList<Delivery> deliveryList =  MainViewModel.getInstance().getDeliveryList();
+                ListView listView = (ListView) findViewById(R.id.deliveriesList);
+                deliveryAdapter = new DeliveryAdapter(self, deliveryList);
+                listView.setAdapter(deliveryAdapter);
+            }
+        });
+
+        task.execute();
+
 
       //  textViewInfo = (TextView) findViewById(R.id.testNFC);
         //On obtient le NFC pour le RFID
@@ -51,13 +71,11 @@ public class DeliveriesListActivity extends AppCompatActivity {
             Toast.makeText(this, "ACTIVE TON NFC BORDEL", Toast.LENGTH_LONG).show();
             finish();
         }*/
-        ListView listView = (ListView) findViewById(R.id.deliveriesList);
-        ArrayList<Delivery> deliveryList = MainViewModel.getInstance().getDeliveryList();
-        deliveryAdapter = new DeliveryAdapter(this, 0, deliveryList);
-        listView.setAdapter(deliveryAdapter);
 
 
     }
+
+
 
     //NFC BULLSHITO
     /*@Override
@@ -102,7 +120,6 @@ public class DeliveriesListActivity extends AppCompatActivity {
     }*/
 
 
-
 }
 
 class DeliveryAdapter extends ArrayAdapter<Delivery> {
@@ -111,8 +128,8 @@ class DeliveryAdapter extends ArrayAdapter<Delivery> {
     private ArrayList<Delivery> deliveryList;
     private static LayoutInflater inflater = null;
 
-    public DeliveryAdapter(Activity activity, int textViewResourceId, ArrayList<Delivery> deliveriesList){
-        super (activity, textViewResourceId, deliveriesList);
+    public DeliveryAdapter(Activity activity, ArrayList<Delivery> deliveriesList){
+        super (activity, 0, deliveriesList);
         try{
             this.activity = activity;
             this.deliveryList = deliveriesList;
@@ -144,8 +161,12 @@ class DeliveryAdapter extends ArrayAdapter<Delivery> {
         View v = convertView;
         if(convertView == null)
         {
-            v = inflater.inflate(R.layout.item_deliveries, parent);
+            v = LayoutInflater.from(getContext()).inflate(R.layout.item_deliveries, parent, false);
         }
+
+        TextView castedView = (TextView) v.findViewById(R.id.item_delivery);
+        Delivery delivery = getItem(position);
+        castedView.setText(delivery.getAdress());
 
         return v;
     }
