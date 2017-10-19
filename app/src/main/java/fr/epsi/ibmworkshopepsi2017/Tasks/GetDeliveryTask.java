@@ -79,11 +79,11 @@ import java.util.HashMap;
 
             Delivery delivery  = new Delivery();
             //Getting data and assigning them to our custom delivery object
-            delivery.setDeliveryID(obj.getInt("deliveryID"));
+            delivery.setDeliveryID(obj.getString("deliveryID"));
             delivery.setAdress(obj.getString("address"));
             delivery.setPrice(obj.getDouble("price"));
             delivery.setQuantity(obj.getInt("quantity"));
-            delivery.setClientID(obj.getInt("clientID"));
+            delivery.setClientID(obj.getString("clientID"));
             delivery.setTypeDelivery(obj.getInt("typeDelivery"));
             delivery.setPackageId(obj.getString("packageID"));
             //Adding delivery to the final list to display

@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    callAPI.execute("http://192.168.43.49:3000/ConnectDeliveryMan", stringifiedParams);
+                    callAPI.execute("http://148.100.4.216:3000/ConnectDeliveryMan", stringifiedParams);
 
 
                 }

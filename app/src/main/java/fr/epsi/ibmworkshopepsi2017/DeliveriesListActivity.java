@@ -78,11 +78,11 @@ public class DeliveriesListActivity extends AppCompatActivity implements  Waitin
                             JSONObject obj = response.getJSONArray("Deliveries").getJSONObject(i);
 
                             Delivery delivery = new Delivery();
-                            delivery.setDeliveryID(obj.getInt("deliveryID"));
+                            delivery.setDeliveryID(obj.getString("deliveryID"));
                             delivery.setAdress(obj.getString("address"));
                             delivery.setPrice(obj.getDouble("price"));
                             delivery.setQuantity(obj.getInt("quantity"));
-                            delivery.setClientID(obj.getInt("clientID"));
+                            delivery.setClientID(obj.getString("clientID"));
                             delivery.setTypeDelivery(obj.getInt("typeDelivery"));
                             delivery.setPackageId(obj.getString("packageID"));
                             //Adding delivery to the final list to display
@@ -147,7 +147,7 @@ public class DeliveriesListActivity extends AppCompatActivity implements  Waitin
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        callAPI.execute("http://192.168.43.49:3000/GetDeliveries", stringifiedParams);
+        callAPI.execute("http://148.100.4.216:3000/GetDeliveries", stringifiedParams);
 
 
         /*GetDeliveryTask task = new GetDeliveryTask(new GetDeliveryTask.TaskListener() {

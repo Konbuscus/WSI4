@@ -15,9 +15,9 @@ public class Delivery implements Serializable{
 
 
     //Private variable
-    private int deliveryID;
+    private String deliveryID;
     private Date dateDelivery;
-    private int clientID;
+    private String clientID;
     private int quantity;
     private String adress;
     private double price;
@@ -39,11 +39,11 @@ public class Delivery implements Serializable{
     }
 
     //Getter And Setter
-    public int getDeliveryID() {
+    public String getDeliveryID() {
         return deliveryID;
     }
 
-    public void setDeliveryID(int deliveryID) {
+    public void setDeliveryID(String deliveryID) {
         this.deliveryID = deliveryID;
     }
 
@@ -55,11 +55,11 @@ public class Delivery implements Serializable{
         this.dateDelivery = dateDelivery;
     }
 
-    public int getClientID() {
+    public String getClientID() {
         return clientID;
     }
 
-    public void setClientID(int clientID) {
+    public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
