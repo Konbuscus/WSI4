@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.hardware.input.InputManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
@@ -17,7 +18,7 @@ public class MainViewModel extends  ViewModel{
     private static MainViewModel mainViewModel;
     private Delivery delivery;
     private ArrayList<Delivery> deliveryList;
-
+    private HashMap<String, String> tupleDeliveryManCenterIDs;
 
 
     public MainViewModel()
@@ -56,5 +57,14 @@ public class MainViewModel extends  ViewModel{
     public String getBanana()
     {
         return "Banana";
+    }
+
+
+    public HashMap<String, String> getTupleDeliveryManCenterIDs() {
+        return tupleDeliveryManCenterIDs;
+    }
+
+    public void setTupleDeliveryManCenterIDs(HashMap<String, String> tupleDeliveryManCenterIDs) {
+        this.tupleDeliveryManCenterIDs = tupleDeliveryManCenterIDs;
     }
 }

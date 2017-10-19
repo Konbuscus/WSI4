@@ -17,8 +17,16 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
 import fr.epsi.ibmworkshopepsi2017.Tasks.AuthenticationTask;
-import fr.epsi.ibmworkshopepsi2017.Tasks.GetDeliveryTask;
+import fr.epsi.ibmworkshopepsi2017.Tasks.CallAPI;
+import fr.epsi.ibmworkshopepsi2017.Tasks.MyCallBack;
+import fr.epsi.ibmworkshopepsi2017.ViewModel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,9 +57,9 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
 
-        Button connectButton = (Button)findViewById(R.id.login_validate_btn);
-        final TextView loginTextView = (TextView)findViewById(R.id.login_login_txt);
-        final TextView passwordTextView = (TextView)findViewById(R.id.login_password_txt);
+        Button connectButton = (Button) findViewById(R.id.login_validate_btn);
+        final TextView loginTextView = (TextView) findViewById(R.id.login_login_txt);
+        final TextView passwordTextView = (TextView) findViewById(R.id.login_password_txt);
 
         toggle.syncState();
 
@@ -64,28 +72,58 @@ public class MainActivity extends AppCompatActivity
             connectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: Vrais trucs
 
-                    AuthenticationTask authenticationTask = new AuthenticationTask(new AuthenticationTask.AutenticationListener() {
+
+                    //On get the id (new task)
+                    CallAPI callAPI = new CallAPI(getApplicationContext(), new MyCallBack() {
                         @Override
-                        public void onFinished(String result) {
+                        public void callback(String pText) {
 
-                            if(result.equals("good")) {
+                            try {
+                                JSONObject response = new JSONObject(pText);
+                                boolean connect = response.getBoolean("success");
+                                if (connect) {
+                                    AlertDialog d = Utilities.buildDialog("Success", "Successfully logged in", MainActivity.this);
+                                    userIsLoggedIn = true;
+                                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                                    drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                                    d.cancel();
 
-                                AlertDialog d = Utilities.buildDialog("Success", "Successfully logged in", MainActivity.this);
-                                userIsLoggedIn = true;
-                                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-                                d.cancel();
-                            } else {
+                                    //Getting infos
+                                    JSONObject res =  (JSONObject) response.getJSONArray("res").get(0);
+                                    String storageCenterID = res.getString("StorageCenterID");
+                                    String deliveryManID = res.getString("DeliveryManID");
+                                    HashMap<String, String> tuple = new HashMap<String, String>();
+                                    tuple.put(storageCenterID, deliveryManID);
+                                    MainViewModel.getInstance().setTupleDeliveryManCenterIDs(tuple);
+
+                                } else {
+
                                     userIsLoggedIn = false;
                                     Utilities.buildDialog("Error", "Failed to log in", MainActivity.this);
                                     //v.invalidate();
                                 }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
-                    }, loginTextView.getText(), passwordTextView.getText());
-                    authenticationTask.execute();
+                        }
+
+                    });
+
+                    HashMap<String, String> params = new HashMap<>();
+                    params.put("login", loginTextView.getText().toString());
+                    params.put("pass", passwordTextView.getText().toString());
+                    String stringifiedParams = "";
+                    try {
+                        stringifiedParams = CallAPI.getPostDataString(params);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    callAPI.execute("http://yoanmercier.fr/tests/connection.php", stringifiedParams);
+
+
                 }
             });
         }
@@ -144,11 +182,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         if (userIsLoggedIn) {
-            final TextView loginTextView = (TextView)findViewById(R.id.login_login_txt);
-            final TextView passwordTextView = (TextView)findViewById(R.id.login_password_txt);
-            final Button connectButton = (Button)findViewById(R.id.login_validate_btn);
-            final TextView label1 = (TextView)findViewById(R.id.login_label);
-            final TextView label2 = (TextView)findViewById(R.id.password_label);
+            final TextView loginTextView = (TextView) findViewById(R.id.login_login_txt);
+            final TextView passwordTextView = (TextView) findViewById(R.id.login_password_txt);
+            final Button connectButton = (Button) findViewById(R.id.login_validate_btn);
+            final TextView label1 = (TextView) findViewById(R.id.login_label);
+            final TextView label2 = (TextView) findViewById(R.id.password_label);
             label1.setVisibility(View.INVISIBLE);
             label2.setVisibility(View.INVISIBLE);
             loginTextView.setVisibility(View.INVISIBLE);
