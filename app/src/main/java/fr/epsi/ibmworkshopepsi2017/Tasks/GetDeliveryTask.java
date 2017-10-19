@@ -3,11 +3,16 @@ package fr.epsi.ibmworkshopepsi2017.Tasks;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import fr.epsi.ibmworkshopepsi2017.MainActivity;
 import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
 import fr.epsi.ibmworkshopepsi2017.Utilities;
+import fr.epsi.ibmworkshopepsi2017.ViewModel.MainViewModel;
+
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by HBxAa on 16/10/2017.
@@ -60,7 +65,7 @@ import java.util.ArrayList;
 
     private void getDelivery() throws JSONException {
         String response = "http://yoanmercier.fr/test.json"; //API URL TO QUERY
-
+        HashMap<String, String> tupleDeliveryCenterIDs = MainViewModel.getInstance().getTupleDeliveryManCenterIDs();
         Utilities utilities = new Utilities();
         String jsonResponse = utilities.GetJson(response);
 

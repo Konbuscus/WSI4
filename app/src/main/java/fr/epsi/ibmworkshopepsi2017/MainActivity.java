@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,15 +114,16 @@ public class MainActivity extends AppCompatActivity
                     });
 
                     HashMap<String, String> params = new HashMap<>();
-                    params.put("login", loginTextView.getText().toString());
-                    params.put("pass", passwordTextView.getText().toString());
+                    params.put("Login", loginTextView.getText().toString());
+                    Toast.makeText(getApplicationContext(), loginTextView.getText().toString(), Toast.LENGTH_LONG).show();
+                    params.put("Password", passwordTextView.getText().toString());
                     String stringifiedParams = "";
                     try {
-                        stringifiedParams = CallAPI.getPostDataString(params);
+                        stringifiedParams = CallAPI.getPostDataString2(params);
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    callAPI.execute("http://yoanmercier.fr/tests/connection.php", stringifiedParams);
+                    callAPI.execute("http://192.168.43.49:3000/ConnectDeliveryMan", stringifiedParams);
 
 
                 }

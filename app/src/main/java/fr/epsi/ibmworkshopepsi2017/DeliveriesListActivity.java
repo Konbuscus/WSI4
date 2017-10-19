@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentManagerNonConfig;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -13,6 +14,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,7 @@ import fr.epsi.ibmworkshopepsi2017.Models.Delivery;
 import fr.epsi.ibmworkshopepsi2017.Tasks.GetDeliveryTask;
 import fr.epsi.ibmworkshopepsi2017.ViewModel.MainViewModel;
 
-public class DeliveriesListActivity extends AppCompatActivity implements  WaitingForConfirmation.OnFragmentInteractionListener {
+public class DeliveriesListActivity extends AppCompatActivity implements  WaitingForConfirmation.OnFragmentInteractionListener, DialogInterface.OnDismissListener {
 
 
     private NfcAdapter nfcAdapter;
@@ -96,6 +98,7 @@ public class DeliveriesListActivity extends AppCompatActivity implements  Waitin
         task.execute();
 
 
+
       //  textViewInfo = (TextView) findViewById(R.id.testNFC);
         //On obtient le NFC pour le RFID
         /*nfcAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -117,6 +120,24 @@ public class DeliveriesListActivity extends AppCompatActivity implements  Waitin
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+
+        //Fragment has been dismissed
+        //Refreshing listview and recalling asynchtask
+        GetDeliveryTask getDeliveryTask = new GetDeliveryTask(new GetDeliveryTask.TaskListener() {
+            @Override
+            public void onFinished(ArrayList<Delivery> result) {
+                Log.d("R", "Refreshing");
+                View v = getWindow().getDecorView().findViewById(android.R.id.content);
+                v.invalidate();
+            }
+        });
+        getDeliveryTask.execute();
+
+    }
+
 
 
     //NFC BULLSHITO

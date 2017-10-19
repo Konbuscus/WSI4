@@ -1,6 +1,8 @@
 package fr.epsi.ibmworkshopepsi2017;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -127,10 +129,12 @@ public class WaitingForConfirmation extends DialogFragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onBackButtonPressed (Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+
+
     }
 
     @Override
@@ -148,6 +152,7 @@ public class WaitingForConfirmation extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
 
     /**
@@ -163,5 +168,15 @@ public class WaitingForConfirmation extends DialogFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        super.onDismiss(dialog);
+        final Activity activity = getActivity();
+        if (activity instanceof DialogInterface.OnDismissListener) {
+            ((DialogInterface.OnDismissListener) activity).onDismiss(dialog);
+        }
     }
 }

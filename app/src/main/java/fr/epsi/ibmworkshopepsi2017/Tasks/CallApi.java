@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -78,9 +80,26 @@ public class CallAPI extends AsyncTask<String, String, String> {
             result.append("=");
             result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
-
-        return result.toString();
+        Log.d("U", "{\"data\" :" + result.toString() + "}");
+        return "{\"data\" :" + result.toString() + "}";
     }
+    public static String getPostDataString2(HashMap<String, String> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for(Map.Entry<String, String> entry : params.entrySet()){
+            if (first)
+                first = false;
+            else
+                result.append(",");
+
+            result.append('"' + entry.getKey() + '"');
+            result.append(":");
+            result.append('"' + entry.getValue() + '"');
+        }
+        Log.d("U", "{" + result.toString() + "}" );
+        return "{" + result.toString() + "}";
+    }
+
 
     public String  performPostCall(String requestURL,
                                    String postDataParams) {
@@ -90,6 +109,7 @@ public class CallAPI extends AsyncTask<String, String, String> {
             url = new URL(requestURL);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
