@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
     <EditText
         android:id="@+id/login_login_txt"
-        android:text="god"
+        android:text="tester"
         android:layout_width="119dp"
         android:layout_height="43dp"
         tools:layout_constraintTop_creator="1"
@@ -64,7 +64,7 @@
         android:id="@+id/login_password_txt"
         android:layout_width="0dp"
         android:layout_height="43dp"
-        android:text="god"
+        android:text="test"
         android:inputType="textPassword"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"

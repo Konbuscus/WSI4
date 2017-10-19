@@ -17,13 +17,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import fr.epsi.ibmworkshopepsi2017.Tasks.AuthenticationTask;
 import fr.epsi.ibmworkshopepsi2017.Tasks.GetDeliveryTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String ROOT_LOGIN = "god";
-    public static final String ROOT_PASSWORD = "god";
+    public static final String ROOT_LOGIN = "Tester";
+    public static final String ROOT_PASSWORD = "test";
     public static Boolean userIsLoggedIn;
 
     @Override
@@ -64,17 +65,27 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     // TODO: Vrais trucs
-                    if (loginTextView.getText().toString().equals(MainActivity.ROOT_LOGIN) && passwordTextView.getText().toString().equals(MainActivity.ROOT_PASSWORD)) {
-                        AlertDialog d = Utilities.buildDialog("Success", "Successfully logged in", MainActivity.this);
-                        userIsLoggedIn = true;
-                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-                        d.cancel();
-                    } else {
-                        userIsLoggedIn = false;
-                        Utilities.buildDialog("Error", "Failed to log in", MainActivity.this);
-                        v.invalidate();
-                    }
+
+                    AuthenticationTask authenticationTask = new AuthenticationTask(new AuthenticationTask.AutenticationListener() {
+                        @Override
+                        public void onFinished(String result) {
+
+                            if(result.equals("good")) {
+
+                                AlertDialog d = Utilities.buildDialog("Success", "Successfully logged in", MainActivity.this);
+                                userIsLoggedIn = true;
+                                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                                d.cancel();
+                            } else {
+                                    userIsLoggedIn = false;
+                                    Utilities.buildDialog("Error", "Failed to log in", MainActivity.this);
+                                    //v.invalidate();
+                                }
+                            }
+
+                    }, loginTextView.getText(), passwordTextView.getText());
+                    authenticationTask.execute();
                 }
             });
         }
