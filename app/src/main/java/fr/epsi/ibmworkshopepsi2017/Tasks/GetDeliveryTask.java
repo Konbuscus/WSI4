@@ -78,8 +78,9 @@ import java.util.ArrayList;
             delivery.setAdress(obj.getString("address"));
             delivery.setPrice(obj.getDouble("price"));
             delivery.setQuantity(obj.getInt("quantity"));
-            delivery.setClientID(obj.getInt("clientId"));
+            delivery.setClientID(obj.getInt("clientID"));
             delivery.setTypeDelivery(obj.getInt("typeDelivery"));
+            delivery.setPackageId(obj.getInt("packageID"));
             //Adding delivery to the final list to display
             deliveryList.add(delivery);
         }

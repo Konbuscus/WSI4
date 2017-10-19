@@ -2,6 +2,8 @@ package fr.epsi.ibmworkshopepsi2017.Models;
 
 import android.os.Parcelable;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,6 +22,7 @@ public class Delivery implements Serializable{
     private String adress;
     private double price;
     private int typeDelivery;
+    private int packageId;
 
 
     //Constructor
@@ -32,6 +35,7 @@ public class Delivery implements Serializable{
         this.adress = getAdress();
         this.price = getPrice();
         this.typeDelivery  = getTypeDelivery();
+        this.packageId = getPackageId();
     }
 
     //Getter And Setter
@@ -89,5 +93,13 @@ public class Delivery implements Serializable{
 
     public void setTypeDelivery(int typeDelivery) {
         this.typeDelivery = typeDelivery;
+    }
+
+    public int getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(int packageId) {
+        this.packageId = packageId;
     }
 }

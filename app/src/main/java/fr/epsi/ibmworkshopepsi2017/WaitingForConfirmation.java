@@ -14,7 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.google.zxing.WriterException;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -88,10 +92,8 @@ public class WaitingForConfirmation extends DialogFragment {
         TextView type = (TextView) v.findViewById(R.id.TypeDelivery);
         ImageView qrImage = (ImageView)v.findViewById(R.id.QRcode);
         address.setText(deliveryClicked.getAdress());
-        if(deliveryClicked.getClientID() != 0)
-        {
-            //clientId.setText(deliveryClicked.getClientID());
-        }
+        clientId.setText(String.valueOf(deliveryClicked.getClientID()));
+
         price.setText(String.valueOf(deliveryClicked.getPrice()));
         quantity.setText(String.valueOf(deliveryClicked.getQuantity()));
         if(deliveryClicked.getTypeDelivery() == 0){
@@ -108,8 +110,10 @@ public class WaitingForConfirmation extends DialogFragment {
         }
         textView.setVisibility(View.VISIBLE);
 
+
+        String finalData = "deliveryID : " + deliveryClicked.getDeliveryID() + " " + "packageID : " + deliveryClicked.getPackageId();
         //QRCODE
-        QRGEncoder qrgEncoder = new QRGEncoder(deliveryClicked.toString(), null, QRGContents.Type.TEXT, 16);
+        QRGEncoder qrgEncoder = new QRGEncoder(finalData, null, QRGContents.Type.TEXT, 16);
         try {
             // Getting QR-Code as Bitmap
            Bitmap bitmap = qrgEncoder.encodeAsBitmap();
