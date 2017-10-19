@@ -22,16 +22,16 @@ public class AuthenticationTask extends AsyncTask<String, Void, String> {
     }
 
     private final AuthenticationListener taskListener;
-    private CharSequence login;
-    private CharSequence pass;
+    private String storagecenter;
+    private String deliveryman;
 
 
 
-    public AuthenticationTask(AuthenticationListener listener, CharSequence Login, CharSequence Pass){
+    public AuthenticationTask(AuthenticationListener listener, String storageCenterID, String DeliveryManID){
 
         this.taskListener = listener;
-        this.login =  Login;
-        this.pass =  Pass;
+        this.storagecenter =  storageCenterID;
+        this.deliveryman =  DeliveryManID;
     }
     @Override
     protected String doInBackground(String... params) {
@@ -44,10 +44,10 @@ public class AuthenticationTask extends AsyncTask<String, Void, String> {
         try
         {
 
-            String data = URLEncoder.encode("login", "UTF-8")
-                    + "=" + URLEncoder.encode(login.toString(), "UTF-8");
-            data+= "&" + URLEncoder.encode("pass", "UTF-8") + "="
-                    + URLEncoder.encode(pass.toString(), "UTF-8");
+            String data = URLEncoder.encode("storageCenterID", "UTF-8")
+                    + "=" + (storagecenter);
+            data+= "&" + URLEncoder.encode("deliveryManID", "UTF-8") + "="
+                    + (deliveryman);
             // Defined URL  where to send data
             URL url = new URL("http://yoanmercier.fr/tests/connection.php");
 

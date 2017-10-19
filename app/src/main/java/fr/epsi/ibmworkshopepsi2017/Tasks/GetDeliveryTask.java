@@ -85,7 +85,7 @@ import java.util.HashMap;
             delivery.setQuantity(obj.getInt("quantity"));
             delivery.setClientID(obj.getInt("clientID"));
             delivery.setTypeDelivery(obj.getInt("typeDelivery"));
-            delivery.setPackageId(obj.getInt("packageID"));
+            delivery.setPackageId(obj.getString("packageID"));
             //Adding delivery to the final list to display
             deliveryList.add(delivery);
         }

@@ -22,7 +22,7 @@ public class Delivery implements Serializable{
     private String adress;
     private double price;
     private int typeDelivery;
-    private int packageId;
+    private String packageId;
 
 
     //Constructor
@@ -95,11 +95,11 @@ public class Delivery implements Serializable{
         this.typeDelivery = typeDelivery;
     }
 
-    public int getPackageId() {
+    public String getPackageId() {
         return packageId;
     }
 
-    public void setPackageId(int packageId) {
+    public void setPackageId(String packageId) {
         this.packageId = packageId;
     }
 }

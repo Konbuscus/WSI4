@@ -21,6 +21,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     public static final String ROOT_LOGIN = "Tester";
     public static final String ROOT_PASSWORD = "test";
     public static Boolean userIsLoggedIn;
-
+    private HashMap<String,String> fuckuMum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,15 +90,14 @@ public class MainActivity extends AppCompatActivity
                                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
                                     d.cancel();
-
+                                    HashMap<String, String> tuple = new HashMap<String, String>();
                                     //Getting infos
                                     JSONObject res =  (JSONObject) response.getJSONArray("res").get(0);
                                     String storageCenterID = res.getString("StorageCenterID");
                                     String deliveryManID = res.getString("DeliveryManID");
-                                    HashMap<String, String> tuple = new HashMap<String, String>();
-                                    tuple.put(storageCenterID, deliveryManID);
-                                    MainViewModel.getInstance().setTupleDeliveryManCenterIDs(tuple);
-
+                                    tuple.put("StorageCenterID", storageCenterID);
+                                    tuple.put("DeliveryManID", deliveryManID);
+                                    setFuckuMum(tuple);
                                 } else {
 
                                     userIsLoggedIn = false;
@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_list_deliveries) {
             Intent intent = new Intent(this, DeliveriesListActivity.class);
+            intent.putExtra("EXTRA_HASH", (Serializable) getFuckuMum());
             startActivity(intent);
         } else if (id == R.id.nav_scan) {
             Intent scanIntent = new Intent(this, ScanActivity.class);
@@ -198,5 +199,13 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onResume();
         }
+    }
+
+    public HashMap<String, String> getFuckuMum() {
+        return  fuckuMum;
+    }
+
+    public void setFuckuMum(HashMap<String, String> fuckuMum) {
+        this.fuckuMum = fuckuMum;
     }
 }
