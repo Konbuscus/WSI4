@@ -113,7 +113,7 @@ public class WaitingForConfirmation extends DialogFragment {
         textView.setVisibility(View.VISIBLE);
 
 
-        String finalData = "deliveryID : " + deliveryClicked.getDeliveryID() + " " + "packageID : " + deliveryClicked.getPackageId();
+        String finalData = deliveryClicked.getDeliveryID() + ":" + deliveryClicked.getPackageId();
         //QRCODE
         QRGEncoder qrgEncoder = new QRGEncoder(finalData, null, QRGContents.Type.TEXT, 16);
         try {
